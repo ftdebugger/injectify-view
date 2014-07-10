@@ -1,3 +1,5 @@
+var RegionsExtras = require("regions-extras/marionette");
+
 module.exports = {
     instance: null,
 
@@ -10,7 +12,8 @@ module.exports = {
                 this.instance = Marionette;
             }
             else {
-                this.instance = require("regions-extras/marionette").getInstance();
+                // may be regions extras known about marionette?
+                this.instance = RegionsExtras.getInstance();
             }
         }
 
@@ -26,5 +29,6 @@ module.exports = {
      */
     setInstance: function (instance) {
         this.instance = instance;
+        RegionsExtras.setInstance(instance);
     }
 };

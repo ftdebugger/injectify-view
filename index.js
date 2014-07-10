@@ -6,6 +6,7 @@
         regionHelper = require("regions-extras"),
         Marionette = require("./marionette").getInstance();
 
+    require("regions-extras/handlebars").setInstance(Handlebars);
 
     Handlebars.registerHelper("view", function (View, name, options) {
         if (typeof name == "object") {
