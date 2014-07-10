@@ -3,7 +3,8 @@
     "use strict";
 
     var Handlebars = require("injectify/runtime"),
-        regionHelper = require("regions-extra");
+        regionHelper = require("regions-extras"),
+        Marionette = require("./marionette").getInstance();
 
 
     Handlebars.registerHelper("view", function (View, name, options) {
