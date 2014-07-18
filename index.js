@@ -8,13 +8,23 @@
 
     require("regions-extras/handlebars").setInstance(Handlebars);
 
-    Handlebars.registerHelper("view", function (View, name, options) {
-        if (typeof name == "object") {
+    var viewHelper = function (View, name, options) {
+        if (typeof name == "object" && name) {
             options = name;
+            name = null;
+        }
+
+        if (!name) {
             name = _.uniqueId('view');
         }
 
-        var view = this.view;
+        var context = this;
+
+        while (context && !context.view && context.__parent__) {
+            context = context.__parent__;
+        }
+
+        var view = context ? context.view : null;
 
         if (view) {
             view.on('render', function () {
@@ -26,7 +36,7 @@
         }
 
         return regionHelper.call(this, name, options);
-    });
+    };
 
     var mixinTemplateHelpers = Marionette.View.prototype.mixinTemplateHelpers;
     Marionette.View.prototype.mixinTemplateHelpers = function (data) {
@@ -36,4 +46,7 @@
         return data;
     };
 
+    Handlebars.registerHelper("view", viewHelper);
+
+    module.exports = viewHelper;
 })();
