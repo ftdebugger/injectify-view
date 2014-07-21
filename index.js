@@ -8,10 +8,32 @@
 
     require("regions-extras/handlebars").setInstance(Handlebars);
 
-    var viewHelper = function (View, name, options) {
-        if (typeof name == "object" && name) {
-            options = name;
-            name = null;
+    /**
+     * @param {Backbone.View} View
+     * @param {String} [name]
+     * @param {Object} [hash]
+     * @param {Object} options
+     * @returns {*}
+     */
+    var viewHelper = function () {
+        var args = _.toArray(arguments),
+            options = args.pop(),
+            View = args.shift(),
+            name, hash;
+
+        if (args.length && typeof args[0] == "string") {
+            name = args.shift();
+        }
+
+        if (args.length && typeof args[0] == "object") {
+            hash = args.pop();
+        }
+
+        if (hash) {
+            hash = _.extend({}, hash, options.hash);
+        }
+        else {
+            hash = options.hash;
         }
 
         if (!name) {
@@ -26,9 +48,13 @@
 
         var view = context ? context.view : null;
 
+        if (options.fn) {
+            hash.content = new Handlebars.SafeString(options.fn(hash));
+        }
+
         if (view) {
             view.on('render', function () {
-                view[name].show(new View(options.hash));
+                view[name].show(new View(hash));
             });
         }
         else {
