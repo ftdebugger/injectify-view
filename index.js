@@ -19,7 +19,7 @@
         var args = _.toArray(arguments),
             options = args.pop(),
             View = args.shift(),
-            name, hash;
+            name, hash, view;
 
         if (args.length && typeof args[0] == "string") {
             name = args.shift();
@@ -40,16 +40,23 @@
             name = _.uniqueId('view');
         }
 
-        var context = this;
+        if (hash.view) {
+            view = hash.view;
+        }
+        else {
+            var context = this;
 
-        while (context && !context.view && context.__parent__) {
-            context = context.__parent__;
+            while (context && !context.view && context.__parent__) {
+                context = context.__parent__;
+            }
+
+            view = context ? context.view : null;
         }
 
-        var view = context ? context.view : null;
-
         if (options.fn) {
-            hash.content = new Handlebars.SafeString(options.fn(hash));
+            hash.content = function (opts) {
+                return new Handlebars.SafeString(options.fn(opts));
+            };
         }
 
         if (view) {
