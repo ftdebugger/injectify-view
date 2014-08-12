@@ -55,6 +55,8 @@
 
         if (options.fn) {
             hash.content = function (opts) {
+                opts = _.clone(opts);
+                delete opts.content;
                 return new Handlebars.SafeString(options.fn(opts));
             };
         }
