@@ -4,7 +4,7 @@
 
     var Marionette = require("../../marionette").getInstance();
 
-    module.exports = Marionette.Layout.extend({
+    module.exports = Marionette.LayoutView.extend({
         template: require("./tpl/ParamLayout.hbs")
     });
 
