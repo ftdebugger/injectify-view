@@ -75,7 +75,7 @@
                 view.off('render', onRender);
             };
 
-            view.on('render', onRender);
+            view.once('render', onRender);
             view.once('destroy', onDestroy);
         }
         else {
