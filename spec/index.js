@@ -42,5 +42,18 @@ describe("Injectify view helper", function () {
         expect(layout.$el.html()).toBe('Layout param 123: <div>Internal 321\n</div>\n');
     });
 
+    it("can re-render view", function () {
+        var Layout = require("./fixture/Layout"),
+            layout = new Layout();
+
+        layout.render();
+        layout.render();
+        expect(layout.test).toBeDefined();
+        expect(layout.test.currentView).toBeDefined();
+        expect(layout.test.currentView.$el.text()).toBe('internal rendered\n');
+
+        expect(layout.$el.html()).toBe('Layout with internal view: <div>internal rendered\n</div>\n');
+    });
+
 
 });

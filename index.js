@@ -62,9 +62,21 @@
         }
 
         if (view) {
-            view.on('render', function () {
-                view[name].show(new View(hash));
-            });
+            var onRender = function () {
+                if (!view[name]) {
+                    console.error('Region is not initialized, may be view is destroyed');
+                }
+                else {
+                    view[name].show(new View(hash));
+                }
+            };
+
+            var onDestroy = function () {
+                view.off('render', onRender);
+            };
+
+            view.on('render', onRender);
+            view.once('destroy', onDestroy);
         }
         else {
             console.warn("Cannot find 'view' for handlebars view helper '" + name + "'");
