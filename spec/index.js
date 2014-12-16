@@ -55,5 +55,13 @@ describe("Injectify view helper", function () {
         expect(layout.$el.html()).toBe('Layout with internal view: <div>internal rendered\n</div>\n');
     });
 
+    it('work inside loop', function () {
+        var Layout = require('./fixture/LoopLayout'),
+            layout = new Layout();
+
+        layout.render();
+        expect(layout.$el.html().indexOf('internal rendered')).not.toBe(-1, layout.$el.html());
+    });
+
 
 });

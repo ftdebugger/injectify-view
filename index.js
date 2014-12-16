@@ -8,6 +8,16 @@
 
     require("regions-extras/handlebars").setInstance(Handlebars);
 
+    var getView = function (context) {
+        if (context) {
+            while (context && !context.view && context.__parent__) {
+                context = context.__parent__;
+            }
+
+            return context ? context.view : null;
+        }
+    };
+
     /**
      * @param {Backbone.View} View
      * @param {String} [name]
@@ -44,13 +54,10 @@
             view = hash.view;
         }
         else {
-            var context = this;
-
-            while (context && !context.view && context.__parent__) {
-                context = context.__parent__;
+            view = getView(this);
+            if (!view && options.data && options.data._parent) {
+                view = getView(options.data._parent.root)
             }
-
-            view = context ? context.view : null;
         }
 
         if (options.fn) {
@@ -82,7 +89,12 @@
             console.warn("Cannot find 'view' for handlebars view helper '" + name + "'");
         }
 
-        return regionHelper.call(this, name, options);
+        var regionHash = _.clone(hash);
+        regionHash.view = view;
+
+        return regionHelper.call(this, name, {
+            hash: regionHash
+        });
     };
 
     var mixinTemplateHelpers = Marionette.View.prototype.mixinTemplateHelpers;
