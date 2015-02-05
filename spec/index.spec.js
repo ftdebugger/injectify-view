@@ -1,20 +1,20 @@
+var Backbone = require("backbone");
+
+// fix bug in backbone
+Backbone.$ = require("jquery");
+window._ = require("underscore");
+
+// configure helper
+require("../marionette").setInstance(require("backbone.marionette"));
+
+// configre regions-extras
+require("regions-extras/marionette").setInstance(require("backbone.marionette"));
+require("regions-extras/handlebars").setInstance(require("injectify/runtime"));
+
+//register 'view' helper
+require("../index");
+
 describe("Injectify view helper", function () {
-
-    var Backbone = require("backbone");
-
-    // fix bug in backbone
-    Backbone.$ = require("jquery");
-    window._ = require("underscore");
-
-    // configure helper
-    require("../marionette").setInstance(require("backbone.marionette"));
-
-    // configre regions-extras
-    require("regions-extras/marionette").setInstance(require("backbone.marionette"));
-    require("regions-extras/handlebars").setInstance(require("injectify/runtime"));
-
-    //register 'view' helper
-    require("../index");
 
     it("include view", function () {
         var Layout = require("./fixture/Layout"),

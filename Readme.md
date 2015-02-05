@@ -23,12 +23,12 @@ var gulp = require("gulp"),
 require("injectify-view/inject");
     
 gulp.task('js', function () {
-    var bundleStream = browserify('./src/index.js')
+    var bundleStream = browserify('./src/index.spec.js')
         .transform(require("injectify"))
         .bundle();
 
     return bundleStream
-        .pipe(source('index.js'))
+        .pipe(source('index.spec.js'))
         .pipe(gulp.dest('dist'));
 });
 ```
@@ -40,7 +40,7 @@ If `Marionette` defined globally you need to do nothing. Elsewhere:
 require("injectify-view/marionette").setInstance(require("backbone.marionette"));
 ```
 
-In file `./src/index.js` require injectify `view` helper:
+In file `./src/index.spec.js` require injectify `view` helper:
 
 ```js
 require("injectify-view");
