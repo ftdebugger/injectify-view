@@ -1,8 +1,5 @@
-(function () {
-    //noinspection BadExpressionStatementJS
-    "use strict";
+//noinspection BadExpressionStatementJS
+"use strict";
 
-    var injectify = require("injectify");
-    injectify.addHelper("view", [0]);
-
-})();
+var injectify = require("injectify");
+injectify.createTransform("view");

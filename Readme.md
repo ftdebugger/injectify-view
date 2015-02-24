@@ -72,3 +72,13 @@ In `Layout` will be created `test` region and view will be putted in.
 
 `view` helper works like original browserify `require`. You can require modules relative to template file or
 `node_modules` directory.
+
+
+Changelog
+=========
+
+v2.0
+----
+
+ * Handlebars 3
+ * Injectify 2

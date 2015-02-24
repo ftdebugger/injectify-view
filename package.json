@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/ftdebugger/injectify-view",
   "dependencies": {
-    "handlebars": "~2.0.0",
-    "injectify": "~1.0.5",
+    "handlebars": "~3.0.0",
+    "injectify": "~2.0.0",
     "regions-extras": "~1.0.0"
   },
   "devDependencies": {
