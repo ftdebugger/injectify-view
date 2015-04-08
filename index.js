@@ -97,14 +97,6 @@
         });
     };
 
-    var mixinTemplateHelpers = Marionette.View.prototype.mixinTemplateHelpers;
-    Marionette.View.prototype.mixinTemplateHelpers = function (data) {
-        data = mixinTemplateHelpers.call(this, data);
-        data.view = this;
-
-        return data;
-    };
-
     Handlebars.registerHelper("view", viewHelper);
 
     module.exports = viewHelper;
