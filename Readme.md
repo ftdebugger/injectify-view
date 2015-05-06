@@ -77,6 +77,11 @@ In `Layout` will be created `test` region and view will be putted in.
 Changelog
 =========
 
+v2.1
+----
+
+ * Allow minor version updates of dependencies
+
 v2.0
 ----
 
