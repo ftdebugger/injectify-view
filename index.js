@@ -64,13 +64,26 @@
      * @returns {*}
      */
     var contentHelper = function (options) {
-        var view = utils.extractView(this, options.hash, options);
+        var view = utils.extractView(this, options.hash, options),
+            content = this.content;
 
-        if (view) {
-            return view.options.content.call(view, options.data.root);
-        } else {
-            console.warn('Cannot find "view" for handlebars content helper');
+        if (!content && view && view.options.content) {
+            content = view.options.content;
         }
+
+        if (typeof content === 'function') {
+            return content.call(view, options.data.root);
+        }
+
+        if (content) {
+            return content;
+        }
+
+        if (!view) {
+            console.warn('Cannot find "view" for handlebars content helper', view, this);
+        }
+
+        return '';
     };
 
     Handlebars.registerHelper('view', viewHelper);
