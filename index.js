@@ -1,13 +1,10 @@
 (function () {
     //noinspection BadExpressionStatementJS
-    "use strict";
+    'use strict';
 
-    var Handlebars = require("injectify/runtime"),
+    var Handlebars = require('injectify/runtime'),
         utils = require('injectify/utils'),
-        regionHelper = require("regions-extras"),
-        Marionette = require("./marionette").getInstance();
-
-    require("regions-extras/handlebars").setInstance(Handlebars);
+        regionHelper = require('regions-extras');
 
     /**
      * @param {Backbone.View} View
@@ -48,9 +45,8 @@
 
             parentView.once('render', onRender);
             parentView.once('destroy', onDestroy);
-        }
-        else {
-            console.warn("Cannot find 'view' for handlebars view helper '" + name + "'");
+        } else {
+            console.warn('Cannot find "view" for handlebars view helper "' + name + '"');
         }
 
         var regionHash = _.clone(hash);
@@ -61,15 +57,24 @@
         });
     };
 
-    var mixinTemplateHelpers = Marionette.View.prototype.mixinTemplateHelpers;
-    Marionette.View.prototype.mixinTemplateHelpers = function (data) {
-        data = mixinTemplateHelpers.call(this, data);
-        data.view = this;
+    /**
+     * Allow use {{content}} helper to render views content from external view, passed as param
+     *
+     * @param options
+     * @returns {*}
+     */
+    var contentHelper = function (options) {
+        var view = utils.extractView(this, options.hash, options);
 
-        return data;
+        if (view) {
+            return view.options.content.call(view, options.data.root);
+        } else {
+            console.warn('Cannot find "view" for handlebars content helper');
+        }
     };
 
-    Handlebars.registerHelper("view", viewHelper);
+    Handlebars.registerHelper('view', viewHelper);
+    Handlebars.registerHelper('content', contentHelper);
 
     module.exports = viewHelper;
 })();

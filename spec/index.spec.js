@@ -1,23 +1,21 @@
-var Backbone = require("backbone");
+var Backbone = require('backbone');
 
 // fix bug in backbone
-Backbone.$ = require("jquery");
-window._ = require("underscore");
+Backbone.$ = require('jquery');
+window._ = require('underscore');
 
-// configure helper
-require("../marionette").setInstance(require("backbone.marionette"));
-
-// configre regions-extras
-require("regions-extras/marionette").setInstance(require("backbone.marionette"));
-require("regions-extras/handlebars").setInstance(require("injectify/runtime"));
+require('regions-extras').register({
+    Handlebars: require('injectify/runtime'),
+    Marionette: require('backbone.marionette')
+});
 
 //register 'view' helper
-require("../index");
+require('../index');
 
-describe("Injectify view helper", function () {
+describe('Injectify view helper', function () {
 
-    it("include view", function () {
-        var Layout = require("./fixture/Layout"),
+    it('include view', function () {
+        var Layout = require('./fixture/Layout'),
             layout = new Layout();
 
         layout.render();
@@ -28,22 +26,22 @@ describe("Injectify view helper", function () {
         expect(layout.$el.html()).toBe('Layout with internal view: <div>internal rendered\n</div>\n');
     });
 
-    it("include view with params", function () {
+    it('include view with params', function () {
         var model = new Backbone.Model({
             value: 123,
             inner: new Backbone.Model({
                 value: 321
             })
         });
-        var Layout = require("./fixture/ParamLayout"),
+        var Layout = require('./fixture/ParamLayout'),
             layout = new Layout({model: model});
 
         layout.render();
         expect(layout.$el.html()).toBe('Layout param 123: <div>Internal 321\n</div>\n');
     });
 
-    it("can re-render view", function () {
-        var Layout = require("./fixture/Layout"),
+    it('can re-render view', function () {
+        var Layout = require('./fixture/Layout'),
             layout = new Layout();
 
         layout.render();
@@ -57,6 +55,14 @@ describe("Injectify view helper", function () {
 
     it('work inside loop', function () {
         var Layout = require('./fixture/LoopLayout'),
+            layout = new Layout();
+
+        layout.render();
+        expect(layout.$el.html().indexOf('internal rendered')).not.toBe(-1, layout.$el.html());
+    });
+
+    it('work as block helper', function () {
+        var Layout = require('./fixture/BlockLayout'),
             layout = new Layout();
 
         layout.render();

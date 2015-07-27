@@ -77,6 +77,11 @@ In `Layout` will be created `test` region and view will be putted in.
 Changelog
 =========
 
+v2.2
+----
+
+ * Change method of internal content render, can be BC for some projects
+
 v2.1
 ----
 

@@ -1,34 +1,21 @@
-var RegionsExtras = require("regions-extras/marionette");
-
 module.exports = {
     instance: null,
 
     /**
+     * @deprecated
      * @returns {Marionette}
      */
     getInstance: function () {
-        if (!this.instance) {
-            if (typeof Marionette != "undefined") {
-                this.instance = Marionette;
-            }
-            else {
-                // may be regions extras known about marionette?
-                this.instance = RegionsExtras.getInstance();
-            }
-        }
-
-        if (!this.instance) {
-            throw new Error("Cannot find marionette");
-        }
-
+        console.warn('This method is deprecated. Please remove it from you code');
         return this.instance;
     },
 
     /**
+     * @deprecated
      * @param {Marionette} instance
      */
     setInstance: function (instance) {
+        console.warn('This method is deprecated. Please remove it from you code');
         this.instance = instance;
-        RegionsExtras.setInstance(instance);
     }
 };

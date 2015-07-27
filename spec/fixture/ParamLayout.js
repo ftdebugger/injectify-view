@@ -1,11 +1,10 @@
 (function(){
-    //noinspection BadExpressionStatementJS
-    "use strict";
+    'use strict';
 
-    var Marionette = require("../../marionette").getInstance();
+    var Marionette = require('backbone.marionette');
 
     module.exports = Marionette.LayoutView.extend({
-        template: require("./tpl/ParamLayout.hbs")
+        template: require('./tpl/ParamLayout.hbs')
     });
 
 })();

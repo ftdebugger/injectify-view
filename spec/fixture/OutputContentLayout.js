@@ -4,11 +4,11 @@
     var Marionette = require('backbone.marionette');
 
     module.exports = Marionette.LayoutView.extend({
-        template: require('./tpl/LoopLayout.hbs'),
+        template: require('./tpl/OutputContentLayout.hbs'),
 
         serializeData: function () {
             return {
-                values: [1, 2]
+                testVar: 123
             };
         }
     });
