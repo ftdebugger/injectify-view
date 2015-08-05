@@ -1,30 +1,28 @@
-/*jshint node: true*/
+'use strict';
 
-(function () {
-    //noinspection BadExpressionStatementJS
-    "use strict";
+var gulp = require('gulp'),
+    KarmaServer = require('karma').Server;
 
-    var gulp = require("gulp"),
-        karma = require("karma").server;
+require('./inject');
 
-    require("./inject");
+gulp.task('karma', function (done) {
+    var options = {
+        configFile: __dirname + '/karma.conf.js',
+        autoWatch: true,
+        singleRun: false
+    };
 
-    gulp.task('karma', function (done) {
-        karma.start({
-            configFile: __dirname + '/karma.conf.js',
-            autoWatch: true,
-            singleRun: false
-        }, done);
-    });
+    new KarmaServer(options, done).start();
+});
 
-    gulp.task('test', function (done) {
-        karma.start({
-            configFile: __dirname + '/karma.conf.js',
-            autoWatch: false,
-            singleRun: true
-        }, done);
-    });
+gulp.task('test', function (done) {
+    var options = {
+        configFile: __dirname + '/karma.conf.js',
+        autoWatch: false,
+        singleRun: true
+    };
 
-    gulp.task('default', ['karma']);
+    new KarmaServer(options, done).start();
+});
 
-})();
+gulp.task('default', ['karma']);

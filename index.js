@@ -1,93 +1,90 @@
-(function () {
-    //noinspection BadExpressionStatementJS
-    'use strict';
+'use strict';
 
-    var Handlebars = require('injectify/runtime'),
-        utils = require('injectify/utils'),
-        regionHelper = require('regions-extras');
+var Handlebars = require('injectify/runtime'),
+    utils = require('injectify/utils'),
+    regionHelper = require('regions-extras');
 
-    /**
-     * @param {Backbone.View} View
-     * @param {String} [name]
-     * @param {Object} [hash]
-     * @param {Object} options
-     * @returns {*}
-     */
-    var viewHelper = function () {
-        var args = utils.extractArguments(this, _.toArray(arguments)),
-            options = args.options,
-            View = args.module,
-            hash = args.hash,
-            parentView = args.parentView,
-            name = args.name;
+/**
+ * @param {Backbone.View} View
+ * @param {String} [name]
+ * @param {Object} [hash]
+ * @param {Object} options
+ * @returns {*}
+ */
+var viewHelper = function () {
+    var args = utils.extractArguments(this, _.toArray(arguments)),
+        options = args.options,
+        View = args.module,
+        hash = args.hash,
+        parentView = args.parentView,
+        name = args.name;
 
-        if (options.fn) {
-            hash.content = function (opts) {
-                opts = _.clone(opts);
-                delete opts.content;
-                return new Handlebars.SafeString(options.fn(opts));
-            };
-        }
+    if (options.fn) {
+        hash.content = function (opts) {
+            opts = _.clone(opts);
+            delete opts.content;
+            return new Handlebars.SafeString(options.fn(opts));
+        };
+    }
 
-        if (parentView) {
-            var onRender = function () {
-                if (!parentView[name]) {
-                    console.error('Region is not initialized, may be view is destroyed');
-                }
-                else {
-                    parentView[name].show(new View(hash));
-                }
-            };
+    if (parentView) {
+        var onRender = function () {
+            if (!parentView[name]) {
+                console.error('Region is not initialized, may be view is destroyed');
+            }
+            else {
+                parentView[name].show(new View(hash));
+            }
+        };
 
-            var onDestroy = function () {
-                parentView.off('render', onRender);
-            };
+        var onDestroy = function () {
+            parentView.off('render', onRender);
+        };
 
-            parentView.once('render', onRender);
-            parentView.once('destroy', onDestroy);
-        } else {
-            console.warn('Cannot find "view" for handlebars view helper "' + name + '"');
-        }
+        parentView.once('render', onRender);
+        parentView.once('destroy', onDestroy);
+    } else {
+        console.warn('Cannot find "view" for handlebars view helper "' + name + '"');
+    }
 
-        var regionHash = _.clone(hash);
-        regionHash.view = parentView;
+    var regionHash = _.clone(hash);
+    regionHash.view = parentView;
 
-        return regionHelper.call(this, name, {
-            hash: regionHash
-        });
-    };
+    return regionHelper.call(this, name, {
+        hash: regionHash
+    });
+};
 
-    /**
-     * Allow use {{content}} helper to render views content from external view, passed as param
-     *
-     * @param options
-     * @returns {*}
-     */
-    var contentHelper = function (options) {
-        var view = utils.extractView(this, options.hash, options),
-            content = this.content;
+/**
+ * Allow use {{content}} helper to render views content from external view, passed as param
+ *
+ * @param options
+ * @returns {*}
+ */
+var contentHelper = function (options) {
+    var view = utils.extractView(this, options.hash, options),
+        content = this.content;
 
-        if (!content && view && view.options.content) {
-            content = view.options.content;
-        }
+    if (!content && view && view.options.content) {
+        content = view.options.content;
+    }
 
-        if (typeof content === 'function') {
-            return content.call(view, options.data.root);
-        }
+    if (typeof content === 'function') {
+        return content.call(view, options.data.root);
+    }
 
-        if (content) {
-            return content;
-        }
+    if (content) {
+        return content;
+    }
 
-        if (!view) {
-            console.warn('Cannot find "view" for handlebars content helper', view, this);
-        }
+    if (!view) {
+        console.warn('Cannot find "view" for handlebars content helper', view, this);
+    }
 
-        return '';
-    };
+    return '';
+};
 
-    Handlebars.registerHelper('view', viewHelper);
-    Handlebars.registerHelper('content', contentHelper);
+Handlebars.registerHelper('view', viewHelper);
+Handlebars.registerHelper('content', contentHelper);
 
-    module.exports = viewHelper;
-})();
+module.exports = viewHelper;
