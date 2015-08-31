@@ -23,7 +23,7 @@ var viewHelper = function () {
         hash.content = function (opts) {
             opts = _.clone(opts);
             delete opts.content;
-            return new Handlebars.SafeString(options.fn(opts));
+            return new Handlebars.SafeString(options.fn(opts, {data: {view: this}}));
         };
     }
 

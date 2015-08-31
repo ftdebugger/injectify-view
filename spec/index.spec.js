@@ -69,5 +69,14 @@ describe('Injectify view helper', function () {
         expect(layout.$el.html().indexOf('internal rendered')).not.toBe(-1, layout.$el.html());
     });
 
+    it('work as block helper', function () {
+        var Layout = require('./fixture/EachLayout'),
+            layout = new Layout({values: [1, 2, 3]});
+
+        layout.render();
+        expect(layout.$el.html().indexOf('Internal 1')).not.toBe(-1, layout.$el.html());
+        expect(layout.$el.html().indexOf('Internal 2')).not.toBe(-1, layout.$el.html());
+        expect(layout.$el.html().indexOf('Internal 3')).not.toBe(-1, layout.$el.html());
+    });
 
 });

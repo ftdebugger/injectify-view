@@ -4,7 +4,12 @@
     var Marionette = require('backbone.marionette');
 
     module.exports = Marionette.ItemView.extend({
-        template: require('./tpl/ParamInternal.hbs')
+        template: require('./tpl/ParamInternal.hbs'),
+        serializeData: function () {
+            return {
+                value: this.model ? this.model.get('value') : this.options.value
+            };
+        }
     });
 
 })();
