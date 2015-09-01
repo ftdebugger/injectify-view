@@ -26,13 +26,15 @@
     "backbone": "^1.2.0",
     "backbone.marionette": "^2.4.0",
     "gulp": "^3.9.0",
-    "injectify": "^2.1.0",
     "handlebars": "^3.0.0",
+    "injectify": "^2.1.0",
+    "jasmine-core": "^2.3.4",
     "jquery": "^2.1.0",
     "karma": "^0.13.0",
     "karma-browserify": "^4.0.0",
     "karma-jasmine": "^0.3.0",
     "karma-phantomjs-launcher": "^0.2.0",
+    "phantomjs": "^1.9.18",
     "underscore": "^1.8.0"
   }
 }

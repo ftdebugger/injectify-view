@@ -69,7 +69,7 @@ describe('Injectify view helper', function () {
         expect(layout.$el.html().indexOf('internal rendered')).not.toBe(-1, layout.$el.html());
     });
 
-    it('work as block helper', function () {
+    it('work with #each helper', function () {
         var Layout = require('./fixture/EachLayout'),
             layout = new Layout({values: [1, 2, 3]});
 
