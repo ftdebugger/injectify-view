@@ -79,4 +79,12 @@ describe('Injectify view helper', function () {
         expect(layout.$el.html().indexOf('Internal 3')).not.toBe(-1, layout.$el.html());
     });
 
+    it('allow zero as content', function () {
+        var Layout = require('./fixture/OutputContentLayout'),
+            layout = new Layout({content: 0});
+
+        layout.render();
+        expect(layout.$el.html()).toBe('<div>0</div>\n', layout.$el.html());
+    });
+
 });

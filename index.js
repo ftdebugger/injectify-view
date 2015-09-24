@@ -65,7 +65,7 @@ var contentHelper = function (options) {
     var view = utils.extractView(this, options.hash, options),
         content = this.content;
 
-    if (!content && view && view.options.content) {
+    if (content == null && view && view.options.content != null) {
         content = view.options.content;
     }
 
@@ -73,12 +73,8 @@ var contentHelper = function (options) {
         return content.call(view, options.data.root);
     }
 
-    if (content) {
+    if (content != null) {
         return content;
-    }
-
-    if (!view) {
-        console.warn('Cannot find "view" for handlebars content helper', view, this);
     }
 
     return '';
