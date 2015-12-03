@@ -6,7 +6,6 @@ module.exports = {
      * @returns {Marionette}
      */
     getInstance: function () {
-        console.warn('This method is deprecated. Please remove it from you code');
         return this.instance;
     },
 
@@ -15,7 +14,6 @@ module.exports = {
      * @param {Marionette} instance
      */
     setInstance: function (instance) {
-        console.warn('This method is deprecated. Please remove it from you code');
         this.instance = instance;
     }
 };
