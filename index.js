@@ -2,7 +2,18 @@
 
 var Handlebars = require('injectify/runtime'),
     utils = require('injectify/utils'),
-    regionHelper = require('regions-extras');
+    regionHelper = require('regions-extras'),
+    escape = Handlebars.Utils.escapeExpression;
+
+/**
+ * @param {{}} ctx
+ * @param {function|*} value
+ *
+ * @returns {*}
+ */
+var result = function (ctx, value) {
+    return (typeof value === 'function') ? value.call(ctx) : value;
+};
 
 /**
  * @param {Backbone.View} View
@@ -25,6 +36,57 @@ var viewHelper = function () {
             delete opts.content;
             return new Handlebars.SafeString(options.fn(opts, {data: {view: this}}));
         };
+    }
+
+    if (hash.pureRender) {
+        var viewProto = View.prototype;
+
+        var mock = {
+            options: hash,
+            model: hash.model,
+            collection: hash.collection,
+
+            getOption: function (key) {
+                return mock.options[key] || View.prototype[key];
+            }
+        };
+
+        var data = viewProto.serializeData.call(mock);
+        var tagName =  escape(result(mock, hash.tagName || viewProto.tagName));
+        var attributes = result(mock, hash.attributes || viewProto.attributes) || {};
+
+        attributes['class'] = result(mock, hash.className || viewProto.className);
+
+        var attributesArray = _.map(attributes, function (value, key) {
+            return escape(key) + '="' + escape(value) + '"';
+        });
+
+        if (viewProto.templateHelpers) {
+            _.extend(data, viewProto.templateHelpers.call(mock));
+        }
+
+        var html = '<' + tagName;
+
+        if (attributesArray.length) {
+            html += ' ' + attributesArray.join(' ');
+        }
+
+        html += '>';
+        html += viewProto.template(data, {data: {view: parentView}});
+        html += '</' + tagName + '>';
+
+        return new Handlebars.SafeString(html);
+    }
+
+    if (hash.pureView) {
+        var view = new View(hash);
+        view.render();
+
+        var content = new Handlebars.SafeString(view.el.outerHTML);
+
+        view.destroy();
+
+        return content;
     }
 
     if (parentView) {

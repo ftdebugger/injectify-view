@@ -87,4 +87,16 @@ describe('Injectify view helper', function () {
         expect(layout.$el.html()).toBe('<div>0</div>\n', layout.$el.html());
     });
 
+    it('render pure view without logic', function () {
+        var template = require('./fixture/tpl/pureRender.hbs');
+
+        expect(template()).toBe('<div class="test"><span id="pureTest" class="test">!123!\n</span></div>\n');
+    });
+
+    it('render pure view as template', function () {
+        var template = require('./fixture/tpl/pureSkipRender.hbs');
+
+        expect(template()).toBe('<div class="test"><span id="pureTest" class="test">!123!\n</span></div>\n');
+    });
+
 });
