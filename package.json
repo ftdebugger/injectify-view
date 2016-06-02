@@ -1,6 +1,6 @@
 {
   "name": "injectify-view",
-  "version": "2.2.7",
+  "version": "2.2.8",
   "description": "Injectify marionette view into template",
   "main": "index.js",
   "author": "Evgeny Shpilevsky",
