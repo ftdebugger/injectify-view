@@ -2,8 +2,9 @@
 
 var Handlebars = require('injectify/runtime'),
     utils = require('injectify/utils'),
-    regionHelper = require('regions-extras'),
-    escape = Handlebars.Utils.escapeExpression;
+    regionHelper = require('regions-extras').default,
+    escape = Handlebars.Utils.escapeExpression,
+    _ = require('underscore');
 
 /**
  * @param {{}} ctx
@@ -91,11 +92,12 @@ var viewHelper = function () {
 
     if (parentView) {
         var onRender = function () {
-            if (!parentView[name]) {
+            var region = parentView.getRegion(name);
+
+            if (!region) {
                 console.error('Region is not initialized, may be view is destroyed');
-            }
-            else {
-                parentView[name].show(new View(hash));
+            } else {
+                region.show(new View(hash));
             }
         };
 
@@ -132,7 +134,9 @@ var contentHelper = function (options) {
     }
 
     if (typeof content === 'function') {
-        return content.call(view, options.data.root);
+        return content.call(view, options.data.root, {
+            data: options.data
+        });
     }
 
     if (content != null) {

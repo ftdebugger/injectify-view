@@ -1,6 +1,6 @@
 var Marionette = require('backbone.marionette');
 
-module.exports = Marionette.LayoutView.extend({
+module.exports = Marionette.View.extend({
     tagName: 'span',
     className: 'test',
     attributes: {

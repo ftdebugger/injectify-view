@@ -3,7 +3,7 @@
 
     var Marionette = require('backbone.marionette');
 
-    module.exports = Marionette.LayoutView.extend({
+    module.exports = Marionette.View.extend({
         template: require('./tpl/Layout.hbs')
     });
 

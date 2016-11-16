@@ -4,10 +4,7 @@ var Backbone = require('backbone');
 Backbone.$ = require('jquery');
 window._ = require('underscore');
 
-require('regions-extras').register({
-    Handlebars: require('injectify/runtime'),
-    Marionette: require('backbone.marionette')
-});
+require('regions-extras')
 
 //register 'view' helper
 require('../index');
@@ -19,9 +16,9 @@ describe('Injectify view helper', function () {
             layout = new Layout();
 
         layout.render();
-        expect(layout.test).toBeDefined();
-        expect(layout.test.currentView).toBeDefined();
-        expect(layout.test.currentView.$el.text()).toBe('internal rendered\n');
+        expect(layout.getRegion('test')).toBeDefined();
+        expect(layout.getRegion('test').currentView).toBeDefined();
+        expect(layout.getRegion('test').currentView.$el.text()).toBe('internal rendered\n');
 
         expect(layout.$el.html()).toBe('Layout with internal view: <div>internal rendered\n</div>\n');
     });
@@ -46,9 +43,9 @@ describe('Injectify view helper', function () {
 
         layout.render();
         layout.render();
-        expect(layout.test).toBeDefined();
-        expect(layout.test.currentView).toBeDefined();
-        expect(layout.test.currentView.$el.text()).toBe('internal rendered\n');
+        expect(layout.getRegion('test')).toBeDefined();
+        expect(layout.getRegion('test').currentView).toBeDefined();
+        expect(layout.getRegion('test').currentView.$el.text()).toBe('internal rendered\n');
 
         expect(layout.$el.html()).toBe('Layout with internal view: <div>internal rendered\n</div>\n');
     });
