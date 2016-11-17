@@ -1,18 +1,13 @@
-var Backbone = require('backbone');
+import Backbone from 'backbone';
 
-// fix bug in backbone
-Backbone.$ = require('jquery');
-window._ = require('underscore');
+import 'regions-extras';
 
-require('regions-extras')
-
-//register 'view' helper
-require('../index');
+import '../src/index';
 
 describe('Injectify view helper', function () {
 
     it('include view', function () {
-        var Layout = require('./fixture/Layout'),
+        let Layout = require('./fixture/Layout'),
             layout = new Layout();
 
         layout.render();
@@ -24,13 +19,13 @@ describe('Injectify view helper', function () {
     });
 
     it('include view with params', function () {
-        var model = new Backbone.Model({
+        let model = new Backbone.Model({
             value: 123,
             inner: new Backbone.Model({
                 value: 321
             })
         });
-        var Layout = require('./fixture/ParamLayout'),
+        let Layout = require('./fixture/ParamLayout'),
             layout = new Layout({model: model});
 
         layout.render();
@@ -38,7 +33,7 @@ describe('Injectify view helper', function () {
     });
 
     it('can re-render view', function () {
-        var Layout = require('./fixture/Layout'),
+        let Layout = require('./fixture/Layout'),
             layout = new Layout();
 
         layout.render();
@@ -51,7 +46,7 @@ describe('Injectify view helper', function () {
     });
 
     it('work inside loop', function () {
-        var Layout = require('./fixture/LoopLayout'),
+        let Layout = require('./fixture/LoopLayout'),
             layout = new Layout();
 
         layout.render();
@@ -59,7 +54,7 @@ describe('Injectify view helper', function () {
     });
 
     it('work as block helper', function () {
-        var Layout = require('./fixture/BlockLayout'),
+        let Layout = require('./fixture/BlockLayout'),
             layout = new Layout();
 
         layout.render();
@@ -67,7 +62,7 @@ describe('Injectify view helper', function () {
     });
 
     it('work with #each helper', function () {
-        var Layout = require('./fixture/EachLayout'),
+        let Layout = require('./fixture/EachLayout'),
             layout = new Layout({values: [1, 2, 3]});
 
         layout.render();
@@ -77,7 +72,7 @@ describe('Injectify view helper', function () {
     });
 
     it('allow zero as content', function () {
-        var Layout = require('./fixture/OutputContentLayout'),
+        let Layout = require('./fixture/OutputContentLayout'),
             layout = new Layout({content: 0});
 
         layout.render();
@@ -85,13 +80,13 @@ describe('Injectify view helper', function () {
     });
 
     it('render pure view without logic', function () {
-        var template = require('./fixture/tpl/pureRender.hbs');
+        let template = require('./fixture/tpl/pureRender.hbs');
 
         expect(template()).toBe('<div class="test"><span id="pureTest" class="test">!123!\n</span></div>\n');
     });
 
     it('render pure view as template', function () {
-        var template = require('./fixture/tpl/pureSkipRender.hbs');
+        let template = require('./fixture/tpl/pureSkipRender.hbs');
 
         expect(template()).toBe('<div class="test"><span id="pureTest" class="test">!123!\n</span></div>\n');
     });

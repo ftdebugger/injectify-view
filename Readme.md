@@ -16,14 +16,14 @@ Usage
 Configure `gulp`:
 
 ```js
-var gulp = require("gulp"),
-    browserify = require("browserify"),
-    source = require("vinyl-source-stream"),
+let gulp = require('gulp'),
+    browserify = require('browserify'),
+    source = require('vinyl-source-stream'),
      
-require("injectify-view/inject");
+require('injectify-view/inject');
     
 gulp.task('js', function () {
-    var bundleStream = browserify('./src/index.spec.js')
+    let bundleStream = browserify('./src/index.spec.js')
         .transform(require("injectify"))
         .bundle();
 
@@ -33,23 +33,17 @@ gulp.task('js', function () {
 });
 ```
 
-If `Marionette` defined globally you need to do nothing. Elsewhere:
-
-```js
-// configure helper
-require("injectify-view/marionette").setInstance(require("backbone.marionette"));
-```
 
 In file `./src/index.spec.js` require injectify `view` helper:
 
 ```js
-require("injectify-view");
+import 'injectify-view';
 ```
 
 Now you can use `view` helper in your templates. For example define layout:
 
 ```js
-var Layout = Marionette.Layout.extend({
+var Layout = Marionette.View.extend({
     template: require("./tpl/Layout.hbs")
 });
 
@@ -76,6 +70,11 @@ In `Layout` will be created `test` region and view will be putted in.
 
 Changelog
 =========
+
+v3.0
+----
+
+ * Marionette 3.0
 
 v2.2
 ----

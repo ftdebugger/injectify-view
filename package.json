@@ -2,10 +2,12 @@
   "name": "injectify-view",
   "version": "2.2.8",
   "description": "Injectify marionette view into template",
-  "main": "index.js",
+  "main": "lib/index.js",
   "author": "Evgeny Shpilevsky",
   "license": "MIT",
   "scripts": {
+    "build": "babel -r -d lib src/",
+    "prepublish": "npm run build && npm run test",
     "test": "karma start --single-run"
   },
   "repository": {
@@ -23,6 +25,10 @@
     "injectify": "*"
   },
   "devDependencies": {
+    "babel-cli": "^6",
+    "babel-core": "^6",
+    "babel-loader": "^6",
+    "babel-preset-latest": "^6",
     "backbone": "^1.3.0",
     "backbone.marionette": "^3",
     "handlebars": "^4.0.0",
@@ -33,6 +39,7 @@
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.2",
     "karma-webpack": "^1.8.0",
+    "lodash": "^4.17.2",
     "underscore": "^1.8.0",
     "webpack": "^2.1.0-beta.27"
   }

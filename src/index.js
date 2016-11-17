@@ -1,10 +1,9 @@
-'use strict';
+import Handlebars from 'injectify/runtime';
+import utils from 'injectify/utils';
+import regionHelper from 'regions-extras';
+import {toArray, clone, map, extend} from 'lodash';
 
-var Handlebars = require('injectify/runtime'),
-    utils = require('injectify/utils'),
-    regionHelper = require('regions-extras').default,
-    escape = Handlebars.Utils.escapeExpression,
-    _ = require('underscore');
+let escape = Handlebars.Utils.escapeExpression;
 
 /**
  * @param {{}} ctx
@@ -12,7 +11,7 @@ var Handlebars = require('injectify/runtime'),
  *
  * @returns {*}
  */
-var result = function (ctx, value) {
+let result = function (ctx, value) {
     return (typeof value === 'function') ? value.call(ctx) : value;
 };
 
@@ -23,8 +22,8 @@ var result = function (ctx, value) {
  * @param {Object} options
  * @returns {*}
  */
-var viewHelper = function () {
-    var args = utils.extractArguments(this, _.toArray(arguments)),
+let viewHelper = function () {
+    let args = utils.extractArguments(this, toArray(arguments)),
         options = args.options,
         View = args.module,
         hash = args.hash,
@@ -33,16 +32,16 @@ var viewHelper = function () {
 
     if (options.fn) {
         hash.content = function (opts) {
-            opts = _.clone(opts);
+            opts = clone(opts);
             delete opts.content;
             return new Handlebars.SafeString(options.fn(opts, {data: {view: this}}));
         };
     }
 
     if (hash.pureRender) {
-        var viewProto = View.prototype;
+        let viewProto = View.prototype;
 
-        var mock = {
+        let mock = {
             options: hash,
             model: hash.model,
             collection: hash.collection,
@@ -52,21 +51,21 @@ var viewHelper = function () {
             }
         };
 
-        var data = viewProto.serializeData.call(mock);
-        var tagName =  escape(result(mock, hash.tagName || viewProto.tagName));
-        var attributes = result(mock, hash.attributes || viewProto.attributes) || {};
+        let data = viewProto.serializeData.call(mock);
+        let tagName =  escape(result(mock, hash.tagName || viewProto.tagName));
+        let attributes = result(mock, hash.attributes || viewProto.attributes) || {};
 
         attributes['class'] = result(mock, hash.className || viewProto.className);
 
-        var attributesArray = _.map(attributes, function (value, key) {
+        let attributesArray = map(attributes, function (value, key) {
             return escape(key) + '="' + escape(value) + '"';
         });
 
         if (viewProto.templateHelpers) {
-            _.extend(data, viewProto.templateHelpers.call(mock));
+            extend(data, viewProto.templateHelpers.call(mock));
         }
 
-        var html = '<' + tagName;
+        let html = '<' + tagName;
 
         if (attributesArray.length) {
             html += ' ' + attributesArray.join(' ');
@@ -80,10 +79,10 @@ var viewHelper = function () {
     }
 
     if (hash.pureView) {
-        var view = new View(hash);
+        let view = new View(hash);
         view.render();
 
-        var content = new Handlebars.SafeString(view.el.outerHTML);
+        let content = new Handlebars.SafeString(view.el.outerHTML);
 
         view.destroy();
 
@@ -91,8 +90,8 @@ var viewHelper = function () {
     }
 
     if (parentView) {
-        var onRender = function () {
-            var region = parentView.getRegion(name);
+        let onRender = function () {
+            let region = parentView.getRegion(name);
 
             if (!region) {
                 console.error('Region is not initialized, may be view is destroyed');
@@ -101,7 +100,7 @@ var viewHelper = function () {
             }
         };
 
-        var onDestroy = function () {
+        let onDestroy = function () {
             parentView.off('render', onRender);
         };
 
@@ -111,7 +110,7 @@ var viewHelper = function () {
         console.warn('Cannot find "view" for handlebars view helper "' + name + '"');
     }
 
-    var regionHash = _.clone(hash);
+    let regionHash = clone(hash);
     regionHash.view = parentView;
 
     return regionHelper.call(this, name, {
@@ -125,8 +124,8 @@ var viewHelper = function () {
  * @param options
  * @returns {*}
  */
-var contentHelper = function (options) {
-    var view = utils.extractView(this, options.hash, options),
+let contentHelper = function (options) {
+    let view = utils.extractView(this, options.hash, options),
         content = this.content;
 
     if (content == null && view && view.options.content != null) {

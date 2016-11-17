@@ -65,11 +65,27 @@ module.exports = function (config) {
             module: {
                 loaders: [
                     {
+                        test: /\.js$/,
+                        loader: 'babel-loader',
+                        exclude: [/jquery/, /lodash/, /backbone/]
+                    },
+                    {
                         test: /\.hbs/,
                         loader: 'injectify'
                     }
                 ]
+            },
+            resolve: {
+                alias: {
+                    'underscore': 'lodash'
+                }
             }
+        },
+
+        webpackMiddleware: {
+            // webpack-dev-middleware configuration
+            // i. e.
+            stats: 'errors-only'
         }
     });
 };
