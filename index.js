@@ -34,7 +34,7 @@ var viewHelper = function () {
         hash.content = function (opts) {
             opts = _.clone(opts);
             delete opts.content;
-            return new Handlebars.SafeString(options.fn(opts, {data: {view: this}}));
+            return new Handlebars.SafeString(options.fn(opts, {data: {view: this, root: options.data.root}}));
         };
     }
 
@@ -125,7 +125,7 @@ var viewHelper = function () {
  */
 var contentHelper = function (options) {
     var view = utils.extractView(this, options.hash, options),
-        content = this.content;
+        content = options.hash.content || this.content;
 
     if (content == null && view && view.options.content != null) {
         content = view.options.content;
