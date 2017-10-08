@@ -110,7 +110,7 @@ var viewHelper = function () {
         view.once('destroy', function() {
             parentView.off('render', onRender);
             parentView.off('destroy', onDestroy);
-            delete parentView[name];
+            parentView.regionManager.removeRegion(name);
         });
     } else {
         console.warn('Cannot find "view" for handlebars view helper "' + name + '"');
