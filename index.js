@@ -97,7 +97,8 @@ var viewHelper = function () {
             else {
                 var view = new View(hash);
                 view.once('destroy', function () {
-                    parentView.trigger('destroy:child:' + name);
+                    parentView.off('destroy', onDestroy);
+                    parentView.regionManager.removeRegion(name);
                 });
                 parentView[name].show(view);
             }
@@ -105,17 +106,10 @@ var viewHelper = function () {
 
         var onDestroy = function () {
             parentView.off('render', onRender);
-            parentView.off('destroy:child:' + name);
-        };
-
-        var onDestroyChild = function () {
-            parentView.off('destroy', onDestroy);
-            parentView.regionManager.removeRegion(name);
         };
 
         parentView.once('render', onRender);
         parentView.once('destroy', onDestroy);
-        parentView.once('destroy:child:' + name, onDestroyChild);
     } else {
         console.warn('Cannot find "view" for handlebars view helper "' + name + '"');
     }
